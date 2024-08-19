@@ -1,0 +1,125 @@
+{
+    "reviews": [
+      {
+        "professor": "Dr. Sarah Johnson",
+        "subject": "Introduction to Psychology",
+        "stars": 4,
+        "review": "Great professor, explains concepts clearly but is strict on deadlines."
+      },
+      {
+        "professor": "Prof. Michael Brown",
+        "subject": "Organic Chemistry",
+        "stars": 3,
+        "review": "His lectures are interesting, but the exams are quite tough."
+      },
+      {
+        "professor": "Dr. Emily White",
+        "subject": "Calculus II",
+        "stars": 5,
+        "review": "Engaging professor! Makes complicated material easy to understand."
+      },
+      {
+        "professor": "Prof. James Walker",
+        "subject": "World History",
+        "stars": 3,
+        "review": "The lectures can be a bit dry, but he's very helpful during office hours."
+      },
+      {
+        "professor": "Dr. Laura Kim",
+        "subject": "Molecular Biology",
+        "stars": 5,
+        "review": "Very patient and approachable. You learn a lot in her class."
+      },
+      {
+        "professor": "Prof. Robert Davis",
+        "subject": "Economics 101",
+        "stars": 2,
+        "review": "Too focused on his research and not enough on teaching."
+      },
+      {
+        "professor": "Dr. Karen Harris",
+        "subject": "English Literature",
+        "stars": 4,
+        "review": "She gives lots of homework but it helps you understand the material better."
+      },
+      {
+        "professor": "Prof. Daniel Lee",
+        "subject": "Computer Science",
+        "stars": 3,
+        "review": "Very engaging lectures and easy to follow, but grading is harsh."
+      },
+      {
+        "professor": "Dr. Elizabeth Taylor",
+        "subject": "Introduction to Sociology",
+        "stars": 5,
+        "review": "Fantastic professor! Always available to help outside of class."
+      },
+      {
+        "professor": "Prof. David Robinson",
+        "subject": "Philosophy 101",
+        "stars": 2,
+        "review": "Interesting class, but the grading seems unfair at times."
+      },
+      {
+        "professor": "Dr. Jessica Williams",
+        "subject": "Microeconomics",
+        "stars": 4,
+        "review": "Her lectures are very informative and she gives great feedback on assignments."
+      },
+      {
+        "professor": "Prof. Christopher Johnson",
+        "subject": "Physics I",
+        "stars": 3,
+        "review": "A bit disorganized but very knowledgeable in his field."
+      },
+      {
+        "professor": "Dr. Megan Garcia",
+        "subject": "Environmental Science",
+        "stars": 5,
+        "review": "Enthusiastic and passionate about the subject. Enjoyed her class!"
+      },
+      {
+        "professor": "Prof. Thomas Clark",
+        "subject": "Statistics",
+        "stars": 2,
+        "review": "Very monotone during lectures, makes it hard to stay focused."
+      },
+      {
+        "professor": "Dr. Anna Wilson",
+        "subject": "Human Anatomy",
+        "stars": 5,
+        "review": "She really cares about her students and makes sure everyone understands the material."
+      },
+      {
+        "professor": "Prof. Jonathan Adams",
+        "subject": "Civil Engineering",
+        "stars": 3,
+        "review": "He covers too much material too quickly, making it hard to keep up."
+      },
+      {
+        "professor": "Dr. Olivia Martinez",
+        "subject": "Pharmacology",
+        "stars": 5,
+        "review": "Super helpful and very patient. Her class was challenging but rewarding."
+      },
+      {
+        "professor": "Prof. Samuel Baker",
+        "subject": "Advanced Calculus",
+        "stars": 4,
+        "review": "His lectures are informative, but his expectations are very high."
+      },
+      {
+        "professor": "Dr. Lisa Thompson",
+        "subject": "American Government",
+        "stars": 4,
+        "review": "Great professor, but sometimes hard to reach outside of class."
+      },
+      {
+        "professor": "Prof. Henry Lewis",
+        "subject": "Business Law",
+        "stars": 2,
+        "review": "His exams are too difficult and don't reflect the material covered in class."
+      }
+    ]
+  }
+  
