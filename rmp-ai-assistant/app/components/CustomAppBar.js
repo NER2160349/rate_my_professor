@@ -10,16 +10,19 @@ import { Box,
     IconButton,
     Drawer,
     List,ListItem,ListItemButton,ListItemIcon,ListItemText,} from '@mui/material'
-
 import MenuIcon from '@mui/icons-material/Menu';
 import InboxIcon from '@mui/icons-material/Inbox'; 
 import MailIcon from '@mui/icons-material/Mail'; 
+import { usePathname, useRouter } from "next/navigation";
+
 
 
 import Image from "next/image";
 
 
 const CustomAppBar = ({ defaultTitle }) => {
+
+const router = useRouter(); // Use useRouter hook for navigation
 
 const [open, setOpen] = useState(false);
 const toggleDrawer = (newOpen) => () => {
@@ -29,12 +32,17 @@ const toggleDrawer = (newOpen) => () => {
     const DrawerList = (
         <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
           <List>
-            {['ChatBot'].map((text, index) => (
+            {['Home','ChatBot'].map((text, index) => (
               <ListItem key={text} disablePadding>
-                <ListItemButton>
-                  <ListItemIcon>
-                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                  </ListItemIcon>
+                <ListItemButton
+                    onClick={
+                        text === "ChatBot"
+                          ? () => router.push("/chatbot")
+                          : text === "Home"
+                          ? () => router.push("/")
+                          : undefined
+                      }
+                >
                   <ListItemText primary={text} />
                 </ListItemButton>
               </ListItem>
