@@ -6,7 +6,7 @@ const systemPrompt = `You are an AI assistant designed to help students find the
 
 Your knowledge base includes detailed information about professors, such as:
 - Name and academic title
-- Department and institution
+- Department labelled under subject
 - Areas of expertise and research interests
 - Teaching style and course difficulty
 - Student ratings and reviews
@@ -17,17 +17,23 @@ For each user query, follow these steps:
 
 1. Understand the user's needs and preferences by analyzing their query.
 2. Retrieve relevant information from your knowledge base using the RAG system.
-3. Evaluate and rank professors based on how well they meet the user's criteria.
-4. Provide a concise summary for each of the top 3 professors, including:
+3. Evaluate and rank professors based on how well they meet the user's criteria, particularly matching the subject of interest.
+4. Provide a concise summary for each of the top 3 professors who match the subject criteria, including:
    - Name and academic information
    - Why they are a good match for the user's needs
    - Key strengths and any potential areas for improvement
    - A relevant student review quote (if available)
+5. Format the response in a clear and structured manner to help the user make an informed decision including:
+   - Professor name, subject, rating, level of difficulty, and tags
+   - Before talking about the next professor, add a line break
 
-5. Offer additional details or further assistance if the user requests more information.
+6. Offer additional details or further assistance if the user requests more information.
 
 Guidelines to follow:
 - Be objective and unbiased in your recommendations.
+- Provide accurate and up-to-date information about professors.
+- Make connections between the user's query and the professors' attributes. For example:
+  - When a user asks for a professor who teaches a specific subject, only include professors whose subject metadata matches the user's query.
 - Ensure privacy by not sharing personal information about professors or students.
 - Encourage users to consider multiple factors, including reviews, teaching style, and course difficulty.
 - Remind users that recommendations are based on available data and may not fully reflect individual experiences.
@@ -35,8 +41,6 @@ Guidelines to follow:
 If the user's query is unclear or lacks specific criteria, ask follow-up questions to clarify their needs before making recommendations.
 
 Your goal is to help students make informed academic decisions by providing accurate, relevant, and helpful information about professors.`;
-
-
 
 export async function POST(req) {
   try {
@@ -59,22 +63,25 @@ export async function POST(req) {
       encoding_format: 'float',
     });
 
-    // Query the Pinecone index using the correct structure
+    // Query the Pinecone index
     const results = await index.query({
-      topK: 3,  // The topK property is required
-      vector: embedding.data[0].embedding,  // The vector property must be included
+      topK: 3,
+      vector: embedding.data[0].embedding,
       includeMetadata: true,
     });
+
+    // Extract subject from the user's query
+    const userQuerySubject = extractSubjectFromQuery(text);
 
     // Build the result string from vector database results
     let resultString = "\n\nReturned results from vector db: ";
     results.matches.forEach((match) => {
-      resultString += `
-      Professor: ${match.id}
-      Review: ${match.metadata.stars}
-      Subject: ${match.metadata.subject}
-      Stars: ${match.metadata.stars}
-      \n\n`;
+      if (match.metadata.subject?.toLowerCase() === userQuerySubject.toLowerCase()) { // Dynamic subject matching
+        resultString += `
+        Professor: ${match.id}
+        ${formatMetadata(match.metadata)}
+        \n\n`;
+      }
     });
 
     // Prepare the final user message with the result string
@@ -118,4 +125,37 @@ export async function POST(req) {
     console.error("Error:", error);
     return new NextResponse("An error occurred", { status: 500 });
   }
+}
+
+// Function to extract the subject from the user query
+function extractSubjectFromQuery(query) {
+  // Implement logic to extract the subject from the user's query
+  const match = query.match(/computer science|mathematics|physics|biology/i);
+  return match ? match[0] : "general";
+}
+
+// Function to format metadata dynamically
+function formatMetadata(metadata) {
+  // Define the possible metadata fields
+  const fields = [
+    'subject', 'stars', 'level_of_difficulty', 'take_again', 'tags', 'review'
+  ];
+
+  // Build the formatted string based on available metadata fields
+  let result = '';
+  fields.forEach(field => {
+    if (metadata[field] !== undefined) {
+      if (Array.isArray(metadata[field])) {
+        result += `${capitalize(field)}: ${metadata[field].join(', ')}\n`;
+      } else {
+        result += `${capitalize(field)}: ${metadata[field]}\n`;
+      }
+    }
+  });
+  return result;
+}
+
+// Utility function to capitalize the first letter of a string
+function capitalize(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1).replace(/_/g, ' ');
 }

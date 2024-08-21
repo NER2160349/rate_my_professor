@@ -21,6 +21,7 @@ import Image from "next/image";
 
 
 export default function Home() {
+<<<<<<< HEAD
 
     return(
         <ThemeProvider theme={CustomTheme}>
@@ -38,3 +39,23 @@ export default function Home() {
 
 
     }
+=======
+
+    return(
+        <ThemeProvider theme={CustomTheme}>
+        <CustomAppBar />
+        </ThemeProvider>
+    )
+
+
+
+
+
+
+
+
+
+
+    }
+    
+>>>>>>> 878dfe27498bb54fc0e57247194162908f23b4f9
