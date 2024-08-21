@@ -57,8 +57,27 @@ export default function Home() {
       flexDirection="column"
       justifyContent="center"
       alignItems="center"
-      bgcolor="#FFFFFF"  // White background
+      position="relative"  // Important for layering the video
+      overflow="hidden"  // To ensure no overflow from the video
     >
+      {/* Background Video */}
+      <Box
+        component="video"
+        src="/background.mp4"  // Path to the video in the public folder
+        autoPlay
+        loop
+        muted
+        sx={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',  // Ensure the video covers the entire container
+          zIndex: -1  // Place the video behind other content
+        }}
+      />
+      
       <Stack
         direction={'column'}
         width="500px"
@@ -67,6 +86,8 @@ export default function Home() {
         p={2}
         spacing={3}
         bgcolor="#F9F9F9"  // Light gray background for the chat container
+        borderRadius={2}  // Optional: add rounded corners
+        sx={{ zIndex: 1 }}  // Ensure the chat container is above the video
       >
         <Stack
           direction={'column'}
