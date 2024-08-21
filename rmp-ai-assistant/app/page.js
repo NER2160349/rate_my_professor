@@ -10,8 +10,11 @@ import { Box,
     IconButton,
     Drawer,
     List,ListItem,ListItemButton,ListItemIcon,ListItemText,} from '@mui/material'
+import {ThemeProvider} from '@mui/material/styles';
 
 import CustomAppBar from "./components/CustomAppBar";
+import CustomTheme from "./components/Theme";
+
 
 
 import Image from "next/image";
@@ -20,7 +23,9 @@ import Image from "next/image";
 export default function Home() {
 
     return(
+        <ThemeProvider theme={CustomTheme}>
         <CustomAppBar />
+        </ThemeProvider>
     )
 
 
