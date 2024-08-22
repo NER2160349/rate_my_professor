@@ -74,7 +74,11 @@ const toggleDrawer = (newOpen) => () => {
               <Button color="inherit">Login</Button>
             </Toolbar>
           </AppBar>
-          <Drawer open={open} onClose={toggleDrawer(false)}>
+          <Drawer open={open} onClose={toggleDrawer(false)}
+          PaperProps={{
+                sx: { backgroundColor: "common.black" , color:"primary.main" }, // Change the background color of the entire Drawer and font
+              }}
+          >
         {DrawerList}
           </Drawer>
         </Box>
