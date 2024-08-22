@@ -25,7 +25,7 @@ For each user query, follow these steps:
    - A relevant student review quote (if available)
 5. Format the response in a clear and structured manner to help the user make an informed decision including:
    - Professor name, subject, rating, level of difficulty, and tags
-   - Before talking about the next professor, add a line break
+   - Talk about the next professor in a new paragraph.
 
 6. Offer additional details or further assistance if the user requests more information.
 
