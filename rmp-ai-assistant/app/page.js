@@ -6,17 +6,10 @@ import { Box,
     TextField,
     AppBar,
     Toolbar,
-    Typography,
-    IconButton,
-    Drawer,
-    List,ListItem,ListItemButton,ListItemIcon,ListItemText,} from '@mui/material'
+    Typography,} from '@mui/material'
 import {ThemeProvider} from '@mui/material/styles';
-
 import CustomAppBar from "./components/CustomAppBar";
 import CustomTheme from "./components/Theme";
-
-
-
 import Image from "next/image";
 
 
