@@ -12,12 +12,24 @@ import CustomAppBar from "./components/CustomAppBar";
 import CustomTheme from "./components/Theme";
 import Image from "next/image";
 
-
 export default function Home() {
-
-    return(
+    return (
         <ThemeProvider theme={CustomTheme}>
-        <CustomAppBar />
+            <CustomAppBar />
+        </ThemeProvider>
+    )
+
+
+
+
+
+
+
+
+
+    return (
+        <ThemeProvider theme={CustomTheme}>
+            <CustomAppBar />
         </ThemeProvider>
     )
 
@@ -31,4 +43,3 @@ export default function Home() {
 
 
     }
-    
