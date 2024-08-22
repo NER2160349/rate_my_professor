@@ -54,7 +54,7 @@ const toggleDrawer = (newOpen) => () => {
           <AppBar position="fixed" 
           sx={{
              backgroundColor: 'common.black',
-             color:'common.white' 
+             color:'primary.main' 
           }} 
           >
             <Toolbar>
@@ -69,7 +69,7 @@ const toggleDrawer = (newOpen) => () => {
                 <MenuIcon />
               </IconButton>
               <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                Rate My Professor AI Support
+              RateMyProfessorAI
               </Typography>
               <Button color="inherit">Login</Button>
             </Toolbar>
