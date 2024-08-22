@@ -27,11 +27,7 @@ export default function Home() {
 
 
 
-    return (
-        <ThemeProvider theme={CustomTheme}>
-            <CustomAppBar />
-        </ThemeProvider>
-    )
+    
 
 
 
