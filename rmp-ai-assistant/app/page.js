@@ -15,7 +15,7 @@ import Head from "next/head";
 
 export default function Home() {
     return (
-    <Box>
+    <Box sx={{ overflowX: 'hidden' }}> {/* This hides any horizontal overflow */}
         <Head>
             <meta name="viewport" content="width=device-width, initial-scale=1" />
         </Head>
@@ -31,6 +31,7 @@ export default function Home() {
                     display: 'flex',  // Flexbox to center content
                     justifyContent: 'center',  // Center content horizontally
                     alignItems: 'center',  // Center content vertically
+                    overflow: 'hidden',  // Prevents overflowing content
                 }}
             >
                 <Grid container spacing={4} sx={{ px: 7 }}>
@@ -46,6 +47,7 @@ export default function Home() {
                             color="secondary"  // Button color
                             size="large"  // Button size
                             sx={{ mb: 2 }}  // Margin bottom to create space below the button
+                            href="/chatbot"
                         >
                             Get Started
                         </Button>
@@ -71,7 +73,7 @@ export default function Home() {
                 </Grid>
             </Box>
 
-            <Box sx={{ marginTop: 2 , padding: 1, marginBottom:6}}>
+            <Box sx={{ marginTop: 2 , padding: 1, marginBottom:6 }}> 
           <Typography variant="h4" component="h2" gutterBottom align='center' padding={1}> 
             <strong>Features</strong>
           </Typography>
@@ -146,6 +148,23 @@ export default function Home() {
             </Grid>
           </Grid>
         </Box>
+        {/* Footer */}
+        <Box 
+                component="footer"
+                sx={{
+                    backgroundColor: 'black',
+                    color: 'white',
+                    padding: 3,
+                    textAlign: 'center',
+                    width: '100%',
+                    position: 'relative',
+                    bottom: 0, // Makes sure it sticks at the bottom
+                }}
+        >
+                <Typography variant="body1">
+                    © 2024 RateMyProfessorAI. All rights reserved.
+                </Typography>
+            </Box>
           
             
 
