@@ -51,7 +51,7 @@ const toggleDrawer = (newOpen) => () => {
 
     return (
         <Box sx={{ flexGrow: 1 }}>
-          <AppBar position="static">
+          <AppBar position="fixed" sx={{ backgroundColor: 'common.black' , color:'common.white' }} >
             <Toolbar>
               <IconButton
                 size="large"
