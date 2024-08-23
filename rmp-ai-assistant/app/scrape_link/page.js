@@ -46,10 +46,13 @@ export default function Home() {
             {/* Add Toolbar to create space for the AppBar */}
             <Toolbar />
 
-                <Box sx={{ p: 4 }}>
+                <Box sx={{ p: 4  }}>
                     <Stack spacing={2} alignItems="center">
-                        <Typography variant="h4" gutterBottom>
-                            Rate My Professor Scraper
+                        <Typography variant="h3" gutterBottom>
+                           <strong> Rate My Professor Scraper </strong>
+                        </Typography>
+                        <Typography variant="h5" gutterBottom>
+                           Expand our database by adding a URL of a professor from Rate My Professor website 
                         </Typography>
                         <TextField
                             fullWidth
@@ -62,6 +65,7 @@ export default function Home() {
                             variant="contained"
                             color="primary"
                             onClick={handleScrape}
+                            size='large'
                         >
                             Scrape and Add to Pinecone
                         </Button>
