@@ -30,7 +30,7 @@ const toggleDrawer = (newOpen) => () => {
     const DrawerList = (
         <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
           <List>
-            {['Home','ChatBot'].map((text, index) => (
+            {['Home','ChatBot','Expand Professor Database'].map((text, index) => (
               <ListItem key={text} disablePadding>
                 <ListItemButton
                     onClick={
@@ -38,6 +38,8 @@ const toggleDrawer = (newOpen) => () => {
                           ? () => router.push("/chatbot")
                           : text === "Home"
                           ? () => router.push("/")
+                          : text === "Expand Professor Database"
+                          ? () => router.push("/scrape_link")
                           : undefined
                       }
                 >
