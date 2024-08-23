@@ -73,7 +73,7 @@ export default function Home() {
           <Stack
             direction={'column'}
             width="500px"
-            height="400px"
+            height="600px"
             border="1px solid #8A2BE2"  // Purple border
             p={2}
             spacing={3}
