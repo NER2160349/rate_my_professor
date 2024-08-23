@@ -34,6 +34,8 @@ export default function Home() {
                     justifyContent: 'center',  // Center content horizontally
                     alignItems: 'center',  // Center content vertically
                     overflow: 'hidden',  // Prevents overflowing content
+                    boxShadow: 6,
+                    borderRadius: 10
                 }}
             >
                 <Grid container spacing={4} sx={{ px: 7 }}>
@@ -57,16 +59,16 @@ export default function Home() {
                     <Grid item xs={12} md={6}>
                         <Box
                             sx={{ 
-                                width: '100%',  // Adjust width of the image container
-                                height: 500,  // Adjust height of the image container
-                                borderRadius: '16px',  // Set the border radius for rounded corners
+                                width: '90%',  // Adjust width of the image container
+                                height: 700,  // Adjust height of the image container
                                 overflow: 'hidden',  // Ensure the image fits within the rounded corners
-                                position: 'relative'  // Required for the Image component
+                                position: 'relative',  // Required for the Image component
+                                marginLeft: 5
                             }}
                         >
                             <Image 
-                                src="/images/chatbot.jpeg"  // Replace with your image path
-                                alt="Background Image"
+                                src="/images/bot.png"  // Replace with your image path
+                                alt="bot mascot"
                                 layout="fill"  // Use fill layout to fit the container
                                 objectFit="cover"  // Ensure the image covers the container
                             />
@@ -88,9 +90,10 @@ export default function Home() {
                     border: "1px solid",
                     borderColor: "grey.300",
                     borderRadius: 2,
-                    ":hover": {
+                    height: '100%',  // Ensures the height stretches to match the tallest box
+                    display: 'flex',  // Flexbox for vertical alignment
+                    flexDirection: 'column',  // Stacks content vertically
                     boxShadow: 6,
-                   },
                   }}
                 >
                   <Typography variant="h6" gutterBottom color={"secondary"}>
@@ -111,9 +114,10 @@ export default function Home() {
                   border: "1px solid",
                   borderColor: "grey.300",
                   borderRadius: 2,
-                  ":hover": {
-                    boxShadow: 6,
-                   },
+                  height: '100%',  // Ensures the height stretches to match the tallest box
+                  display: 'flex',  // Flexbox for vertical alignment
+                  flexDirection: 'column',  // Stacks content vertically
+                  boxShadow: 6,
                 }}
               >
               <Typography variant="h6" gutterBottom color={"secondary"}>
@@ -134,9 +138,11 @@ export default function Home() {
                   border: "1px solid",
                   borderColor: "grey.300",
                   borderRadius: 2,
-                  ":hover": {
-                    boxShadow: 6,
-                   },
+                  height: '100%',  // Ensures the height stretches to match the tallest box
+                  display: 'flex',  // Flexbox for vertical alignment
+                  flexDirection: 'column',  // Stacks content vertically
+                  boxShadow: 6
+                   
                 }}
               >
               <Typography variant="h6" gutterBottom color={"secondary"}>
@@ -157,6 +163,7 @@ export default function Home() {
                     backgroundColor: 'black',
                     color: 'white',
                     padding: 3,
+                    marginTop: 10,
                     textAlign: 'center',
                     width: '100%',
                     position: 'relative',
