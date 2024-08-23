@@ -1,5 +1,5 @@
 'use client'
-import { Box, Button, Stack, TextField } from '@mui/material';
+import { Box, Button, Stack, TextField, Toolbar } from '@mui/material';
 import { useState } from 'react';
 import {ThemeProvider} from '@mui/material/styles';
 import CustomAppBar from "../components/CustomAppBar";
@@ -60,6 +60,8 @@ export default function Home() {
     <ThemeProvider theme={CustomTheme}>
              
       <CustomAppBar />
+      {/* Add Toolbar to create space for the AppBar */}
+      <Toolbar />
         <Box
           width="100vw"
           height="100vh"

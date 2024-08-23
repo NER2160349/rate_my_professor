@@ -1,6 +1,9 @@
 'use client'
-import { Box, Button, Stack, TextField, Typography } from '@mui/material'
+import { Box, Button, Stack, TextField, Typography, Toolbar } from '@mui/material'
 import { useState } from 'react'
+import CustomAppBar from "../components/CustomAppBar";
+import CustomTheme from "../components/Theme";
+import {ThemeProvider} from '@mui/material/styles';
 
 export default function Home() {
     const [url, setUrl] = useState('')
@@ -36,31 +39,39 @@ export default function Home() {
     }
 
     return (
-        <Box sx={{ p: 4 }}>
-            <Stack spacing={2} alignItems="center">
-                <Typography variant="h4" gutterBottom>
-                    Rate My Professor Scraper
-                </Typography>
-                <TextField
-                    fullWidth
-                    label="Professor URL"
-                    variant="outlined"
-                    value={url}
-                    onChange={(e) => setUrl(e.target.value)}
-                />
-                <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleScrape}
-                >
-                    Scrape and Add to Pinecone
-                </Button>
-                {status && (
-                    <Typography variant="body1" color={status.startsWith('Success') ? 'green' : 'red'}>
-                        {status}
-                    </Typography>
-                )}
-            </Stack>
-        </Box>
+        <ThemeProvider theme={CustomTheme}>
+             
+            <CustomAppBar />
+
+            {/* Add Toolbar to create space for the AppBar */}
+            <Toolbar />
+
+                <Box sx={{ p: 4 }}>
+                    <Stack spacing={2} alignItems="center">
+                        <Typography variant="h4" gutterBottom>
+                            Rate My Professor Scraper
+                        </Typography>
+                        <TextField
+                            fullWidth
+                            label="Professor URL"
+                            variant="outlined"
+                            value={url}
+                            onChange={(e) => setUrl(e.target.value)}
+                        />
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={handleScrape}
+                        >
+                            Scrape and Add to Pinecone
+                        </Button>
+                        {status && (
+                            <Typography variant="body1" color={status.startsWith('Success') ? 'green' : 'red'}>
+                                {status}
+                            </Typography>
+                        )}
+                    </Stack>
+                </Box>
+    </ThemeProvider>
     )
 }

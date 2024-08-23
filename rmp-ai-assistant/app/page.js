@@ -6,7 +6,7 @@ import { Box,
     TextField,
     AppBar,
     Toolbar,
-    Typography,Grid} from '@mui/material'
+    Typography,Grid } from '@mui/material'
 import {ThemeProvider} from '@mui/material/styles';
 import CustomAppBar from "./components/CustomAppBar";
 import CustomTheme from "./components/Theme";
@@ -22,6 +22,8 @@ export default function Home() {
         <ThemeProvider theme={CustomTheme}>
              
                 <CustomAppBar />
+                {/* Add Toolbar to create space for the AppBar */}
+                <Toolbar />
                 <Box
                 component="section"
                 sx={{
