@@ -26,6 +26,10 @@ export async function scrapeProfessorData(professorUrl) {
     );
     const subject = subjectTag.text().replace("department", "").trim() || "N/A";
 
+    // Extract institution name from <a> tag with href starting with /school/
+    const institutionTag = $("a[href^='/school/']").first();
+    const institution = institutionTag.text().trim() || "N/A";
+
     const starsTag = $(".RatingValue__Numerator-qw8sqy-2.liyUjw");
     const stars = starsTag.text().trim() || "N/A";
 
@@ -66,6 +70,7 @@ export async function scrapeProfessorData(professorUrl) {
     // Return the data instead of saving it to a file
     return {
       professor: professorName,
+      institution: institution,
       subject: subject,
       stars: stars,
       levelOfDifficulty: difficulty,
@@ -106,6 +111,7 @@ export async function processProfessorEmbeddings(scrapedData) {
       id: scrapedData.professor, // Use professor name as ID
       values: embedding,
       metadata: {
+        institution: scrapedData.institution,
         reviews: scrapedData.reviews,
         subject: scrapedData.subject,
         stars: scrapedData.stars,
