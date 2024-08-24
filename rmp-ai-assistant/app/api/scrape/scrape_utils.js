@@ -79,7 +79,7 @@ export async function scrapeProfessorData(professorUrl) {
   }
 }
 
-export async function processAndAddEmbeddings(scrapedData) {
+export async function processProfessorEmbeddings(scrapedData) {
   try {
     // Initialize Pinecone client
     const pc = new Pinecone({
