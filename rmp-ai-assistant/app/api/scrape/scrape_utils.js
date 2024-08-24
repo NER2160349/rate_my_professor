@@ -1,6 +1,5 @@
 import axios from "axios";
 import * as cheerio from "cheerio";
-import fs from "fs";
 import dotenv from "dotenv";
 import { Pinecone } from "@pinecone-database/pinecone";
 import { OpenAI } from "openai";
@@ -10,6 +9,7 @@ dotenv.config();
 
 export async function scrapeProfessorData(professorUrl) {
   try {
+    // Scrape professor data from RateMyProfessors website
     const response = await axios.get(professorUrl);
     const $ = cheerio.load(response.data);
 
@@ -28,9 +28,6 @@ export async function scrapeProfessorData(professorUrl) {
 
     const starsTag = $(".RatingValue__Numerator-qw8sqy-2.liyUjw");
     const stars = starsTag.text().trim() || "N/A";
-
-    const reviewTag = $(".Comments__StyledComments-dzzyvm-0.gRjWel");
-    const review = reviewTag.text().trim() || "N/A";
 
     const feedbackItems = $(
       ".FeedbackItem__StyledFeedbackItem-uof32n-0.dTFbKx"
@@ -66,8 +63,8 @@ export async function scrapeProfessorData(professorUrl) {
       }
     });
 
-    // Save to JSON
-    const data = {
+    // Return the data instead of saving it to a file
+    return {
       professor: professorName,
       subject: subject,
       stars: stars,
@@ -76,16 +73,13 @@ export async function scrapeProfessorData(professorUrl) {
       tags: tags,
       reviews: reviews,
     };
-    fs.writeFileSync(
-      "reviews.json",
-      JSON.stringify({ reviews: [data] }, null, 4)
-    );
   } catch (error) {
     console.error(`Error scraping data: ${error.message}`);
+    throw error;
   }
 }
 
-export async function processAndAddEmbeddings() {
+export async function processAndAddEmbeddings(scrapedData) {
   try {
     // Initialize Pinecone client
     const pc = new Pinecone({
@@ -96,70 +90,39 @@ export async function processAndAddEmbeddings() {
     const index = pc.Index(index_name);
     console.log(`Index initialized: ${index_name}`);
 
-    const data = JSON.parse(
-      fs.readFileSync("reviews.json", "utf8")
-    );
-    const reviewData = data.reviews; // Assuming only one professor's data
-    console.log("review data", reviewData);
     // Initialize OpenAI
     const openai = new OpenAI();
 
     const processedData = [];
-    console.log("processing data");
-    for (const review of reviewData) {
-      try {
-        console.log("review", typeof review);
-        const response = await openai.embeddings.create({
-          model: "text-embedding-3-small",
-          input: review.reviews,
-        });
-        console.log("response", response);
-        console.log("response.data", response.data[0]);
-        const embedding = response.data[0].embedding;
-        // console.log("embedding", embedding);
-        console.log("typeof embedding", typeof embedding);
-        console.log("review.professor", review.professor);
-        console.log("review.subject", review.subject);
-        console.log("review.stars", review.stars);
-        console.log("review.levelOfDifficulty", review.levelOfDifficulty);
-        console.log("review.takeAgain", review.takeAgain);
-        console.log("review.tags", review.tags);
-        console.log("review.reviews", review.reviews);
+    console.log("Scraped data:", scrapedData);
+    // Create embedding for the scraped reviews
+    const response = await openai.embeddings.create({
+      model: "text-embedding-3-small",
+      input: scrapedData.reviews,
+    });
+    const embedding = response.data[0].embedding;
 
-        processedData.push({
-          id: review.professor, // Use professor name as ID
-          values: embedding,
-          metadata: {
-            reviews: review.reviews,
-            subject: review.subject,
-            stars: review.stars,
-            levelOfDifficulty: review.levelOfDifficulty,
-            takeAgain: review.takeAgain,
-            tags: review.tags,
-          },
-        });
-      } catch (error) {
-        console.error(
-          `Error generating embedding for review "${review}": ${error.message}`
-        );
-      }
-    }
-    // console.log('processedData',processedData);
-    // console.log("Upserting data:", JSON.stringify(processedData, null, 2));
-
-    // Upsert to Pinecone
-    // if (processedData.length > 0) {
-    // try {
-    await index.namespace("ns1").upsert([
-      {
-        id: processedData[0].id,
-        values: processedData[0].values,
-        metadata: processedData[0].metadata
+    processedData.push({
+      id: scrapedData.professor, // Use professor name as ID
+      values: embedding,
+      metadata: {
+        reviews: scrapedData.reviews,
+        subject: scrapedData.subject,
+        stars: scrapedData.stars,
+        levelOfDifficulty: scrapedData.levelOfDifficulty,
+        takeAgain: scrapedData.takeAgain,
+        tags: scrapedData.tags,
       },
-    ]);
+    });
+
+    // Upsert the data into Pinecone
+    await index.namespace("ns1").upsert(processedData);
+
+    // Get index stats to verify the embeddings were added
     const stats = await index.describeIndexStats();
     console.log("Index stats:", stats);
   } catch (error) {
     console.error(`Error processing and adding embeddings: ${error.message}`);
+    throw error;
   }
 }

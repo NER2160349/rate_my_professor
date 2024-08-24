@@ -11,10 +11,10 @@ export async function POST(request) {
     }
 
     // Scrape the professor data
-    await scrapeProfessorData(professorUrl);
+    const scrapedData = await scrapeProfessorData(professorUrl);
 
     // Process and add embeddings to Pinecone
-    await processAndAddEmbeddings();
+    await processAndAddEmbeddings(scrapedData);
 
     return NextResponse.json({ success: true, message: 'Data scraped and embeddings added successfully' }, { status: 200 });
 
