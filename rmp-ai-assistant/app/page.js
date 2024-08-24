@@ -2,9 +2,7 @@
 import { useState } from 'react'
 import { Box, 
     Button,
-    Stack,
-    TextField,
-    AppBar,
+    useMediaQuery,
     Toolbar,
     Typography,Grid } from '@mui/material'
 import {ThemeProvider, useTheme} from '@mui/material/styles';
@@ -12,7 +10,6 @@ import CustomAppBar from "./components/CustomAppBar";
 import CustomTheme from "./components/Theme";
 import Image from "next/image";
 import Head from "next/head";
-import { useMediaQuery } from '@mui/material';
 
 export default function Home() {
     const theme = useTheme(); // Access theme using useTheme hook
