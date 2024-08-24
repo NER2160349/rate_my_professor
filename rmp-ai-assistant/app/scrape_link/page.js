@@ -27,7 +27,7 @@ export default function Home() {
 
             if (response.ok) {
                 const result = await response.text()
-                setStatus(`Success: ${result}`)
+                setStatus(`Scraped Successfully`)
             } else {
                 const errorResult = await response.text()
                 setStatus(`Failed to process the request: ${errorResult}`)
@@ -52,11 +52,11 @@ export default function Home() {
                            <strong> Rate My Professor Scraper </strong>
                         </Typography>
                         <Typography variant="h5" gutterBottom>
-                           Expand our database by adding a URL of a professor from Rate My Professor website 
+                           Expand our database by adding a URL of a PROFESSOR or SCHOOL from Rate My Professor website 
                         </Typography>
                         <TextField
                             fullWidth
-                            label="Professor URL"
+                            label="Professor / School URL"
                             variant="outlined"
                             value={url}
                             onChange={(e) => setUrl(e.target.value)}
@@ -67,10 +67,10 @@ export default function Home() {
                             onClick={handleScrape}
                             size='large'
                         >
-                            Scrape and Add to Pinecone
+                            Add to Database
                         </Button>
                         {status && (
-                            <Typography variant="body1" color={status.startsWith('Success') ? 'green' : 'red'}>
+                            <Typography variant="body1" color={status.startsWith('Scraped') ? 'green' : 'red'}>
                                 {status}
                             </Typography>
                         )}
