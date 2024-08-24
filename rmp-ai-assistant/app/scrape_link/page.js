@@ -56,7 +56,7 @@ export default function Home() {
                         </Typography>
                         <TextField
                             fullWidth
-                            label="Professor URL"
+                            label="Professor / School URL"
                             variant="outlined"
                             value={url}
                             onChange={(e) => setUrl(e.target.value)}
