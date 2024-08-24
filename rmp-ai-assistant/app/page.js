@@ -7,13 +7,17 @@ import { Box,
     AppBar,
     Toolbar,
     Typography,Grid } from '@mui/material'
-import {ThemeProvider} from '@mui/material/styles';
+import {ThemeProvider, useTheme} from '@mui/material/styles';
 import CustomAppBar from "./components/CustomAppBar";
 import CustomTheme from "./components/Theme";
 import Image from "next/image";
 import Head from "next/head";
+import { useMediaQuery } from '@mui/material';
 
 export default function Home() {
+    const theme = useTheme(); // Access theme using useTheme hook
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm')); // Now it can access breakpoints
+
     return (
     <Box sx={{ overflowX: 'hidden' }}> {/* This hides any horizontal overflow */}
         <Head>
@@ -39,46 +43,55 @@ export default function Home() {
                 }}
             >
                 <Grid container spacing={4} sx={{ px: 7 }}>
-                    <Grid item xs={12} md={6} sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                        <Typography
-                            variant="h2"
-                            sx={{ mb: 5 }}  // Margin bottom to create space between heading and button
-                        >
-                            <strong>RateMyProfessorAI</strong>
-                        </Typography>
-                        <Button
-                            variant="outlined"  // Button style variant
-                            color="secondary"  // Button color
-                            size="large"  // Button size
-                            sx={{ mb: 2 }}  // Margin bottom to create space below the button
-                            href="/chatbot"
-                        >
-                            Get Started
-                        </Button>
-                    </Grid>
-                    <Grid item xs={12} md={6}>
-                        <Box
-                            sx={{ 
-                                width: '90%',  // Adjust width of the image container
-                                height: 700,  // Adjust height of the image container
-                                overflow: 'hidden',  // Ensure the image fits within the rounded corners
-                                position: 'relative',  // Required for the Image component
-                                marginLeft: 5
-                            }}
-                        >
-                            <Image 
-                                src="/images/bot.png"  // Replace with your image path
-                                alt="bot mascot"
-                                layout="fill"  // Use fill layout to fit the container
-                                objectFit="cover"  // Ensure the image covers the container
-                            />
-                        </Box>
-                    </Grid>
-                </Grid>
+        <Grid 
+          item xs={12} 
+          md={6} 
+          sx={{ 
+            display: 'flex', 
+            flexDirection: 'column', 
+            justifyContent: 'center',
+            textAlign: isMobile ? 'center' : 'left'  // Adjust text alignment for mobile
+          }}
+        >
+          <Typography
+            variant={isMobile ? 'h4' : 'h2'}  // Adjust heading size for mobile
+            sx={{ mb: 5 , textAlign:"center"}}
+          >
+            <strong>RateMyProfessorAI</strong>
+          </Typography>
+          <Button
+            variant="outlined"
+            color="secondary"
+            size="large"
+            sx={{ mb: 2 }}
+            href="/chatbot"
+          >
+            Get Started
+          </Button>
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <Box
+            sx={{
+              width: isMobile ? '100%' : '90%',
+              height: isMobile ? 400 : 700,
+              overflow: 'hidden',
+              position: 'relative',
+              marginLeft: isMobile ? 0 : 5
+            }}
+          >
+            <Image 
+              src="/images/bot.png"  
+              alt="bot mascot"
+              layout="fill"
+              objectFit="contain"
+            />
+          </Box>
+        </Grid>
+      </Grid>
             </Box>
 
-            <Box sx={{ marginTop: 2 , padding: 1, marginBottom:6 }}> 
-          <Typography variant="h4" component="h2" gutterBottom align='center' padding={1}> 
+            <Box sx={{ marginTop: 10 , padding: 1, marginBottom:10 }}> 
+          <Typography variant="h2" component="h2" gutterBottom align='center' padding={1}> 
             <strong>Features</strong>
           </Typography>
 
@@ -156,6 +169,34 @@ export default function Home() {
             </Grid>
           </Grid>
         </Box>
+
+        <Box sx={{ marginTop: 10 , padding: 1, marginBottom:6, textAlign: "center" }}  > 
+          <Typography variant="h4" component="h2" gutterBottom align='center' padding={1}> 
+            <strong>Expand Our Database</strong>
+          </Typography>
+          <Box
+                sx={{
+                  p: 3,
+                  border: "5px solid",
+                  borderColor: "primary.dark",
+                  borderRadius: 5,
+                }}
+              >
+                <Typography  variant="h5"  >
+                  Help us Out By submitting URL of a Professor or School from Rate my Professor website to expand our database
+                </Typography>
+                <Button
+                  variant="contained"
+                  size="large"
+                  color="primary"
+                  sx={{ mt: 2 }}
+                  href="/scrape_link"
+                >
+                  Expand Database
+                </Button>
+              </Box>
+        </Box>
+
         {/* Footer */}
         <Box 
                 component="footer"
@@ -181,24 +222,6 @@ export default function Home() {
         </ThemeProvider>
     </Box>
     )
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
-
-
-
 
 
     }
