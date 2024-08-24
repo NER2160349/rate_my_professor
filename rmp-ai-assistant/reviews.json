@@ -1,0 +1,40 @@
+{
+    "reviews": [
+        {
+            "professor": "Luke Hunsberger",
+            "subject": "Computer Science",
+            "stars": "4",
+            "levelOfDifficulty": "3.6",
+            "takeAgain": "100%",
+            "tags": [
+                "Respected",
+                "Lecture heavy",
+                "Tough grader",
+                "Amazing lectures",
+                "Gives good feedback"
+            ],
+            "reviews": [
+                "I don't understand why some professors are still teaching. He is clearly very smart and probably was a great teacher back in the day but for everyone's sake, he should not be teaching.",
+                "lectures were kidna boring, tests were pretty fair. Seemed like a cool guy tho.",
+                "never thought I would major in computer science until I took his class. He explained things clearly and gave the best hints/instructions for labs/homework/final project. I found it super cool to study from the textbook he wrote himself. DrRacket is not popular but it teaches me to think functionally so I have no complaints. I just love everything.",
+                "I had zero computer science experience and this class made me really love it. His lectures were a little dry, but super effective, I always learned from them. He wrote the textbook that we used so his lectures were pretty much identical to the textbook. I learned everything from the lectures and never cracked the textbook. The homework was fun!",
+                "The homework was manageable and the coach hours were very accessible to a remote student like me. Most of what's in the lecture are already covered through the textbook. The midterm was easy, final was unexpectedly harder. The class was fun :)",
+                "He's a very nice person but DrScheme (the coding language you learn) is just the absolute worst LOL and I think kind of ruined CMPU101 for me. He's personable and cracks jokes and his expectations are reasonable, though. I failed some of my quizzes and did mediocre at best on his tests yet still got an A- so lol just do your best and it'll be ok",
+                "Professor Hunsberger is incredibly intelligent.  He made comp sci accessible to those who are new to programming, and fun for those who aren't.  He's a little goofy every once in a while, but it's all in good fun.  He wants you to succeed and structures his class in such a way that you can if you put in the effort.",
+                "A wise oddball sort of guy. Really enjoyed his class - I had taken compsci classes before, but this was different from anything else. I found his lecture style to be clear and really helped me understand the material. Tests can be a bit tricky but assignments are fun, and I thought the final project was actually really interesting and doable.",
+                "Worst class ever.",
+                "Hunsberger was amazing! Take CMPU101 with him for sure! Labs and assignments were never difficult.",
+                "As someone who began with no comp sci experience, I appreciated that Hunsberger takes the time to teach the basics. Weekly assignments and labs are manageable, and Hunsberger and coaches are extremely helpful when you're stuck on a problem or have difficulty understanding the material.",
+                "He sometimes gets a little ahead of the class, but for someone as smart as he is, he does a good job of being clear. Very fair grader. Not for those who aren't truly interested in computer science, though. Serious and to-the-point, but also capable of bizarre non-sequiturs that are hilarious in a meta sort of way.",
+                "Assignments and labs aren't easy but he's a great teacher and a good dude. He taught me well for 102.",
+                "Great guy, and easily one of the smartest people I have ever met. The only problem with that is that he doesn't realize when things are difficult, because he is so damn smart.  Quite difficult for an intro class, almost turned me off the subject.",
+                "Good professor. He offered coaches to help with projects and labs which was extremely helpful",
+                "Oh, Hunsy... Very organized, focused lectures that made most things clear (with the notable exception of basic stats).  Very professional, with a few (very funny) moments of wackiness as the semester went on.  One gripe: he never clearly explained how the course was graded, even when asked.  Also, the midterms were rather difficult.",
+                "Good when I took him.  Smart, helpful, clear.  He wrote his own textbook and distributed it for free, which was pretty great.",
+                "Unclear, extremely difficult, unhelpful, and very unreasonable with homework due dates.",
+                "hunsberger is clearly a very intelligent man but he's not very good at explaining things.  his assignments and labs are often unclear and confusing.  one assignment he realized a day or two before it was due that there was a big problem with the way he wrote it and expected students to adhere to his last minute changes.",
+                "Hunsberger really knows his stuff, and is super organized. The labs and assignments are always 100% relevant to what we're learning, and it's not hard at all if you go to lectures (although sometimes time-consuming). Great intro prof!"
+            ]
+        }
+    ]
+}

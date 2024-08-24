@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
 import { Pinecone } from "@pinecone-database/pinecone";
 import OpenAI from "openai";
+import fetch from 'node-fetch';
+globalThis.fetch = fetch;
+
 
 const systemPrompt = `You are an AI assistant designed to help students find the most suitable professors based on their specific queries. Your primary role is to provide the top 3 professors who best match the user's criteria, using a Retrieval-Augmented Generation (RAG) system.
 
@@ -60,8 +63,8 @@ export async function POST(req) {
     const embedding = await openai.embeddings.create({
       model: "text-embedding-3-small",
       input: text,
-      encoding_format: 'float',
     });
+    // const embedding = response.data[0].embedding;
 
     // Query the Pinecone index
     const results = await index.query({
@@ -96,7 +99,6 @@ export async function POST(req) {
         ...lastDataWithoutLastMessage,
         { role: "user", content: lastMessageContent },
       ],
-      model: "gpt-3.5-turbo",
       stream: true,
     });
 
