@@ -95,7 +95,6 @@ export async function POST(req) {
 
     // Generate a response using the OpenAI chat completion API
     const completion = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo",
       messages: [
         { role: "system", content: systemPrompt },
         ...lastDataWithoutLastMessage,
