@@ -42,6 +42,7 @@ export default function Home() {
                     component="section"
                     sx={{
                         backgroundColor: 'primary.main',
+                        mt: 2,
                         width: '100%',
                         minHeight: '700px',
                         display: 'flex',
