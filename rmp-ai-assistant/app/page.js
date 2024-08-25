@@ -90,9 +90,9 @@ export default function Home() {
                                 }}
                             >
                                 <Image 
-                                    src="/images/bot.png"  
+                                    src="/images/chatbot.png"  
                                     alt="bot mascot"
-                                    layout="fill"
+                                    fill
                                     objectFit="contain"
                                 />
                             </Box>

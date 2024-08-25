@@ -32,6 +32,7 @@ For each user query, follow these steps:
 Guidelines to follow:
 - Follow this format:
   - A sentence that starts to introduce the professors based on the query: the name of the professors. 
+  - Do not add the word "professor" before the name of the professors.
   - An example that should be followed is if the user asks for professors that teach computer science , "Here are the top 3 professors that teach computer science: professor1, professor2, and professor3." Afterward, provide detailed information about each professor in separate paragraphs.
   - The first sentence should always be the same: "Here are the top 3 professors that teach [subject]: [professor1], [professor2], and [professor3]." or similar to this.
   - Other examples are:
@@ -62,51 +63,52 @@ If the user's query is unclear or lacks specific criteria, ask follow-up questio
 Your goal is to help students make informed academic decisions by providing accurate, relevant, and helpful information about professors.`;
 
 export async function POST(req) {
-    const data = await req.json();
+  const data = await req.json();
 
-    // Initialize Pinecone client
-    const pc = new Pinecone({ apiKey: process.env.PINECONE_API_KEY });
-    const index = pc.index("rag").namespace("ns1");
+  // Initialize Pinecone client
+  const pc = new Pinecone({ apiKey: process.env.PINECONE_API_KEY });
+  const index = pc.index("rag").namespace("ns1");
 
-    // Initialize OpenAI client
-    const openai = new OpenAI();
+  // Initialize OpenAI client
+  const openai = new OpenAI();
 
-    // Extract the last message content
-    const text = data[data.length - 1].content;
+  // Extract the last message content
+  const text = data[data.length - 1].content;
 
-    // Create embeddings using the OpenAI client
-    const embedding = await openai.embeddings.create({
-        model: "text-embedding-3-small",
-        input: text,
-        encoding_format: "float",
-    });
-    // Extract subject from the user's query
-    const criteria = extractCriteriaFromQuery(text);
-    // Extract subject from criteria or use a default value
-    const userQuerySubject = criteria.subject || "";
+  // Create embeddings using the OpenAI client
+  const embedding = await openai.embeddings.create({
+    model: "text-embedding-3-small",
+    input: text,
+    encoding_format: "float",
+  });
+  // Extract subject from the user's query
+  const criteria = extractCriteriaFromQuery(text);
+  // Extract subject from criteria or use a default value
+  const userQuerySubject = criteria.subject || "";
 
-    // Ensure userQuerySubject is a string and convert it to lowercase
-    const normalizedUserQuerySubject = typeof userQuerySubject === 'string' ? userQuerySubject.toLowerCase() : "";
+  // Ensure userQuerySubject is a string and convert it to lowercase
+  const normalizedUserQuerySubject =
+    typeof userQuerySubject === "string" ? userQuerySubject.toLowerCase() : "";
 
-    // Query the Pinecone index
-    const results = await index.query({
-        topK: 50,  // Retrieve more results to filter by subject
-        vector: embedding.data[0].embedding,
-        includeMetadata: true,
-    });
+  // Query the Pinecone index
+  const results = await index.query({
+    topK: 50, // Retrieve more results to filter by subject
+    vector: embedding.data[0].embedding,
+    includeMetadata: true,
+  });
 
-    
+  // Filter results based on the subject
+  const filteredResults = results.matches
+    .filter((match) => {
+      const entrySubject = match.metadata?.subject?.toLowerCase();
+      return entrySubject === normalizedUserQuerySubject;
+    })
+    .slice(0, 3); // Limit to top 3 results
 
-    // Filter results based on the subject
-    const filteredResults = results.matches.filter(match => {
-        const entrySubject = match.metadata?.subject?.toLowerCase();
-        return entrySubject === normalizedUserQuerySubject;
-    }).slice(0, 3);  // Limit to top 3 results
-
-    // Build the result string from filtered results
-    let resultString = "\n\nReturned results from vector db: ";
-    filteredResults.forEach((match) => {
-        resultString += `
+  // Build the result string from filtered results
+  let resultString = "\n\nReturned results from vector db: ";
+  filteredResults.forEach((match) => {
+    resultString += `
         Professor: ${match.id}
         Institution: ${match.metadata.institution}
         Review: ${match.metadata.stars}
@@ -116,43 +118,43 @@ export async function POST(req) {
         Level of Difficulty: ${match.metadata.levelOfDifficulty}
         Tags: ${match.metadata.tags}
         \n\n`;
-    });
+  });
 
-    // Prepare the final user message with the result string
-    const lastMessage = data[data.length - 1];
-    const lastMessageContent = lastMessage.content + resultString;
-    const lastDataWithoutLastMessage = data.slice(0, data.length - 1);
+  // Prepare the final user message with the result string
+  const lastMessage = data[data.length - 1];
+  const lastMessageContent = lastMessage.content + resultString;
+  const lastDataWithoutLastMessage = data.slice(0, data.length - 1);
 
-    // Generate a response using the OpenAI chat completion API
-    const completion = await openai.chat.completions.create({
-        model: "gpt-3.5-turbo",
-        messages: [
-            { role: "system", content: systemPrompt },
-            ...lastDataWithoutLastMessage,
-            { role: "user", content: lastMessageContent },
-        ],
-        stream: true,
-    });
-    // Stream the response back to the client
-    const stream = new ReadableStream({
-        async start(controller) {
-            const encoder = new TextEncoder();
-            try {
-                for await (const chunk of completion) {
-                    const content = chunk.choices[0]?.delta?.content;
-                    if (content) {
-                        controller.enqueue(encoder.encode(content));
-                    }
-                }
-            } catch (err) {
-                controller.error(err);
-            } finally {
-                controller.close();
-            }
-        },
-    });
+  // Generate a response using the OpenAI chat completion API
+  const completion = await openai.chat.completions.create({
+    model: "gpt-3.5-turbo",
+    messages: [
+      { role: "system", content: systemPrompt },
+      ...lastDataWithoutLastMessage,
+      { role: "user", content: lastMessageContent },
+    ],
+    stream: true,
+  });
+  // Stream the response back to the client
+  const stream = new ReadableStream({
+    async start(controller) {
+      const encoder = new TextEncoder();
+      try {
+        for await (const chunk of completion) {
+          const content = chunk.choices[0]?.delta?.content;
+          if (content) {
+            controller.enqueue(encoder.encode(content));
+          }
+        }
+      } catch (err) {
+        controller.error(err);
+      } finally {
+        controller.close();
+      }
+    },
+  });
 
-    return new NextResponse(stream);
+  return new NextResponse(stream);
 }
 
 // Function to extract criteria from the user query
@@ -162,85 +164,109 @@ function extractCriteriaFromQuery(query) {
 
   // Define possible metadata fields and their variations
   const metadataFields = {
-      subject: [
-          "computer science", "mathematics", "physics", "biology", "chemistry",
-          "history", "philosophy", "psychology", "sociology", "economics",
-          "political science", "literature", "engineering", "law",
-          "business", "art", "music", "geography", "medicine", "nursing"
-      ],
-      stars: "stars",
-      levelOfDifficulty: "level of difficulty",
-      tags: "tags",
-      review: "review",
-      takeAgain: "take again"
+    subject: [
+      "computer science",
+      "mathematics",
+      "physics",
+      "biology",
+      "chemistry",
+      "history",
+      "philosophy",
+      "psychology",
+      "sociology",
+      "economics",
+      "political science",
+      "literature",
+      "engineering",
+      "law",
+      "business",
+      "art",
+      "music",
+      "geography",
+      "medicine",
+      "nursing",
+    ],
+    stars: "stars",
+    levelOfDifficulty: "level of difficulty",
+    tags: "tags",
+    review: "review",
+    takeAgain: "take again",
   };
 
   // Extract criteria based on metadata fields
   const criteria = {};
 
   // Check for subject matches
-  const subjectMatch = metadataFields.subject.find(subject => lowerQuery.includes(subject));
+  const subjectMatch = metadataFields.subject.find((subject) =>
+    lowerQuery.includes(subject)
+  );
   if (subjectMatch) {
-      criteria.subject = subjectMatch;
+    criteria.subject = subjectMatch;
   }
 
   // Check for rating (stars)
   const ratingMatch = lowerQuery.match(/stars:\s*(\d+(\.\d+)?)\s*/i);
   if (ratingMatch) {
-      criteria.stars = ratingMatch[1].trim();
+    criteria.stars = ratingMatch[1].trim();
   }
 
   // Check for level of difficulty
-  const difficultyMatch = lowerQuery.match(/level of difficulty:\s*(\d+(\.\d+)?)\s*/i);
+  const difficultyMatch = lowerQuery.match(
+    /level of difficulty:\s*(\d+(\.\d+)?)\s*/i
+  );
   if (difficultyMatch) {
-      criteria.levelOfDifficulty = difficultyMatch[1].trim();
+    criteria.levelOfDifficulty = difficultyMatch[1].trim();
   }
 
   // Check for tags
   const tagsMatch = lowerQuery.match(/tags:\s*([\w\s,]+)\s*/i);
   if (tagsMatch) {
-      criteria.tags = tagsMatch[1].split(',').map(tag => tag.trim());
+    criteria.tags = tagsMatch[1].split(",").map((tag) => tag.trim());
   }
 
   // Check for take again
   const takeAgainMatch = lowerQuery.match(/take again:\s*(\d+%)\s*/i);
   if (takeAgainMatch) {
-      criteria.takeAgain = takeAgainMatch[1].trim();
+    criteria.takeAgain = takeAgainMatch[1].trim();
   }
 
   // Check for review
   const reviewMatch = lowerQuery.match(/review:\s*(.*)/i);
   if (reviewMatch) {
-      criteria.review = reviewMatch[1].trim();
+    criteria.review = reviewMatch[1].trim();
   }
 
   // Return extracted criteria
   return Object.keys(criteria).length > 0 ? criteria : {};
 }
 
-
 // Function to format metadata dynamically
 function formatMetadata(metadata) {
-    // Define the possible metadata fields
-    const fields = [
-        'subject', 'stars', 'level_of_difficulty', 'take_again', 'tags', 'review'
-    ];
+  // Define the possible metadata fields
+  const fields = [
+    "subject",
+    "stars",
+    "level_of_difficulty",
+    "take_again",
+    "tags",
+    "review",
+  ];
 
-    // Build the formatted string based on available metadata fields
-    let result = '';
-    fields.forEach(field => {
-        if (metadata[field] !== undefined) {
-            if (Array.isArray(metadata[field])) {
-                result += `${capitalize(field)}: ${metadata[field].join(', ')}\n`;
-            } else {
-                result += `${capitalize(field)}: ${metadata[field]}\n`;
-            }
-        }
-    });
-    return result;
+  // Build the formatted string based on available metadata fields
+  let result = "";
+  fields.forEach((field) => {
+    if (metadata[field] !== undefined) {
+      if (Array.isArray(metadata[field])) {
+        result += `${capitalize(field)}: ${metadata[field].join(", ")}\n`;
+      } else {
+        result += `${capitalize(field)}: ${metadata[field]}\n`;
+      }
+    }
+  });
+  return result;
 }
 
 // Utility function to capitalize the first letter of a string
 function capitalize(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1).replace(/_/g, ' ');
+  return string.charAt(0).toUpperCase() + string.slice(1).replace(/_/g, " ");
 }
