@@ -141,6 +141,7 @@ export default function Home() {
           spacing={3}
           bgcolor="#F9F9F9" // Light gray background for the chat container
           borderRadius={2} //  add rounded corners
+          mt={2}
         >
           <Stack
             direction={"column"}
