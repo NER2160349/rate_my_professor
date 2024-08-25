@@ -56,11 +56,11 @@ const CustomAppBar = ({ defaultTitle }) => {
                         RateMyProfessorAI
                     </Typography>
                     {user ? (
-                        <Button variant="outlined" color="secondary" size="large" sx={{ mb: 2 }} onClick={handleSignOut}>
+                        <Button variant="outlined" color="secondary" size="large" sx={{ margin: 2 }} onClick={handleSignOut}>
                             Sign Out
                         </Button>
                     ) : (
-                        <Button variant="outlined" color="secondary" size="large" sx={{ mb: 2 }} href="/login">
+                        <Button variant="outlined" color="secondary" size="large" sx={{ margin: 2 }} href="/login">
                             Login
                         </Button>
                     )}
