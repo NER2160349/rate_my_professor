@@ -102,7 +102,6 @@ export async function POST(req) {
       ],
       stream: true,
     });
-
     // Stream the response back to the client
     const stream = new ReadableStream({
       async start(controller) {

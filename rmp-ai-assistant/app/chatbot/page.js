@@ -1,9 +1,13 @@
 'use client'
 import { Box, Button, Stack, TextField, Toolbar } from '@mui/material';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {ThemeProvider} from '@mui/material/styles';
 import CustomAppBar from "../components/CustomAppBar";
 import CustomTheme from "../components/Theme";
+import { useRouter } from 'next/router';
+import axios from 'axios';
+import { Container, Typography, Card, CardContent, CircularProgress } from '@mui/material';
+
 
 export default function Home() {
   const [messages, setMessages] = useState([
@@ -14,6 +18,10 @@ export default function Home() {
   ]);
 
   const [message, setMessage] = useState('');
+  const router = useRouter();
+  const { id } = router.query;
+  const [entryData, setEntryData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const sendMessage = async () => {
     setMessages((messages) => [
@@ -55,6 +63,22 @@ export default function Home() {
       });
     });
   };
+    // Fetch entry data by ID
+    useEffect(() => {
+      if (id) {
+        axios.get(`/api/getEntryById`, { params: { id } })
+          .then((response) => {
+            setEntryData(response.data);
+            setLoading(false);
+          })
+          .catch((error) => {
+            console.error('Error fetching entry data:', error);
+            setLoading(false);
+          });
+      }
+    }, [id]);
+    
+
 
   return (
     <ThemeProvider theme={CustomTheme}>
@@ -142,6 +166,25 @@ export default function Home() {
             </Stack>
           </Stack>
         </Box>
+        {/* Metadata Section */}
+        <Container>
+          {loading ? (
+            <CircularProgress />
+          ) : !entryData ? (
+            <Typography variant="h6">Entry not found</Typography>
+          ) : (
+            <Card>
+              <CardContent>
+                <Typography variant="h5">Entry ID: {entryData.id}</Typography>
+                <Typography variant="h6">Metadata:</Typography>
+                <pre>{JSON.stringify(entryData.metadata, null, 2)}</pre>
+              </CardContent>
+            </Card>
+          )}
+        </Container>
   </ThemeProvider>
   );
 }
+
+
+
