@@ -141,7 +141,7 @@ export default function Home() {
           spacing={3}
           bgcolor="#000000" // Black background for the chat container
           borderRadius={2} //  add rounded corners
-          mt={10}
+          mt={20}
         >
           <Stack
             direction={"column"}
@@ -206,7 +206,7 @@ export default function Home() {
         </Stack>
       </Box>
       {/* Metadata Section */}
-      <Container sx={{marginTop: 10 }}>
+      <Container sx={{marginTop: 30 }}>
         {loading ? (
           ""
         ) : !entryData ? (
