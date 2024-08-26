@@ -19,7 +19,7 @@ export default function Home() {
     {
       role: "assistant",
       content:
-        "Hi! I'm the Rate My Professor support assistant. How can I help you today?",
+        "Hi! I'm the RateMyProfessorAI Chatbot. How can I help you today?",
     },
   ]);
 
@@ -136,12 +136,12 @@ export default function Home() {
           direction={"column"}
           width="500px"
           height="600px"
-          border="1px solid #8A2BE2" // Purple border
+          border="5px solid #8A2BE2" // Purple border
           p={2}
           spacing={3}
-          bgcolor="#F9F9F9" // Light gray background for the chat container
+          bgcolor="#000000" // Black background for the chat container
           borderRadius={2} //  add rounded corners
-          mt={2}
+          mt={10}
         >
           <Stack
             direction={"column"}
@@ -182,12 +182,12 @@ export default function Home() {
               onChange={(e) => setMessage(e.target.value)}
               sx={{
                 input: {
-                  color: "black", // Black text for better readability
+                  color: "white", // White text for better readability
                 },
                 label: {
                   color: "#a648cd", // Darker purple for label
                 },
-                border: "1px solid #a648cd", // Purple border
+                border: "5px solid #a648cd", // Purple border
               }}
             />
             <Button
@@ -206,39 +206,61 @@ export default function Home() {
         </Stack>
       </Box>
       {/* Metadata Section */}
-      <Container>
+      <Container sx={{marginTop: 10 }}>
         {loading ? (
-          <CircularProgress />
+          ""
         ) : !entryData ? (
           <Typography variant="h6">Entry not found</Typography>
         ) : (
-          <Card>
+          <Card sx={{backgroundColor:"primary.main"}}>
             <CardContent>
-              <Typography variant="h5">
-                Professor: {entryData.records[entryId].id}
+            {entryData.records[entryId] ? (
+              <Typography variant="h3" textAlign={"center"} marginBottom={5}>
+                <strong>Professor: {entryData.records[entryId].id}</strong>
               </Typography>
-              <Typography variant="h6">
-                Institution: {entryData.records[entryId].metadata.institution}
+            ) : (
+              <Typography variant="h4" textAlign={"center"} marginBottom={5}>
+                <strong>No entries found: Mock Data presented in chat, help us out with real data and expand our database. Refresh the page to continue</strong>
               </Typography>
-              <Typography variant="h6">
-                Subject: {entryData.records[entryId].metadata.subject}
-              </Typography>
-              <Typography variant="h6">
-                Stars: {entryData.records[entryId].metadata.stars}
-              </Typography>
-              <Typography variant="h6">
+            )}
+             <Typography variant="h6">
+              <strong>
+                Institution:{" "}
+                {entryData.records[entryId]?.metadata?.institution ? entryData.records[entryId].metadata.institution : "No institution available"}
+              </strong>
+            </Typography>
+            <Typography variant="h6">
+              <strong>
+                Subject:{" "}
+                {entryData.records[entryId]?.metadata?.subject ? entryData.records[entryId].metadata.subject : "No subject available"}
+              </strong>
+            </Typography>
+            <Typography variant="h6">
+              <strong>
+                Stars:{" "}
+                {entryData.records[entryId]?.metadata?.stars ? entryData.records[entryId].metadata.stars : "No stars rating available"}
+              </strong>
+            </Typography>
+            <Typography variant="h6">
+              <strong>
                 Level of Difficulty:{" "}
-                {entryData.records[entryId].metadata.levelOfDifficulty}
-              </Typography>
-              <Typography variant="h6">
-                Take Again: {entryData.records[entryId].metadata.takeAgain}
-              </Typography>
+                {entryData.records[entryId]?.metadata?.levelOfDifficulty ? entryData.records[entryId].metadata.levelOfDifficulty : "No difficulty rating available"}
+              </strong>
+            </Typography>
+            <Typography variant="h6">
+              <strong>
+                Take Again:{" "}
+                {entryData.records[entryId]?.metadata?.takeAgain ? entryData.records[entryId].metadata.takeAgain : "No take again info available"}
+              </strong>
+            </Typography>
+
 
               {/* Display Tags as a comma-separated list */}
-              <Typography variant="h6">Tags:</Typography>
+              <Typography variant="h6">
+                <strong>Tags:</strong>
+              </Typography>
               <ul>
-                {entryData.records[entryId].metadata.tags &&
-                entryData.records[entryId].metadata.tags.length > 0 ? (
+                {entryData.records[entryId]?.metadata?.tags && entryData.records[entryId].metadata.tags.length > 0 ? (
                   entryData.records[entryId].metadata.tags.map((tag, index) => (
                     <li key={index}>{tag}</li>
                   ))
@@ -248,16 +270,15 @@ export default function Home() {
               </ul>
 
               {/* Display Reviews as a list of paragraphs or another suitable format */}
-              <Typography variant="h6">Reviews:</Typography>
-              {entryData.records[entryId].metadata.reviews &&
-              entryData.records[entryId].metadata.reviews.length > 0 ? (
-                entryData.records[entryId].metadata.reviews.map(
-                  (review, index) => (
-                    <Box key={index} p={1} borderBottom="1px solid #ddd">
-                      <Typography variant="body1">{review}</Typography>
-                    </Box>
-                  )
-                )
+              <Typography variant="h4">
+                <strong>Reviews:</strong>
+              </Typography>
+              {entryData.records[entryId]?.metadata?.reviews && entryData.records[entryId].metadata.reviews.length > 0 ? (
+                entryData.records[entryId].metadata.reviews.map((review, index) => (
+                  <Box key={index} p={1} borderBottom="1px solid #ddd">
+                    <Typography variant="body1">{review}</Typography>
+                  </Box>
+                ))
               ) : (
                 <Typography>No reviews available</Typography>
               )}
